@@ -1,0 +1,75 @@
+name: Build and deploy the portfolio
+
+# Every night the site re-reads the public repositories, so a new repository, README or report
+# shows up on its own. It also runs on every push to main and from the Actions tab.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install PDF and video tools
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends poppler-utils ffmpeg imagemagick
+
+      - run: npm ci
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Restore the translation cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: translations-${{ github.run_id }}
+          restore-keys: translations-
+
+      - name: Read the GitHub repositories
+        run: npm run fetch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Translate (English ⇄ Italian)
+        run: npm run translate
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+
+      - name: Build the pages
+        run: npm run build
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

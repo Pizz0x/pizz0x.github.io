@@ -1,0 +1,142 @@
+{
+  "name": "Filippo Pizzo",
+  "role": "MSc Computer Engineering student",
+  "location": "Venice, Italy",
+  "pdf": "Filippo_Pizzo_CV.pdf",
+  "summary": "MSc Computer Engineering student specializing in Distributed Systems, High Performance Computing and Big Data Architectures. Hands-on experience in building scalable data pipelines (batch/streaming), advanced algorithms, database optimization and cloud infrastructure.",
+  "availability": "Currently seeking a Data Engineering Master Thesis Internship starting March 2027.",
+  "gpa": "29.5",
+  "education": [
+    {
+      "org": "University of Padua",
+      "logo": "unipd.svg",
+      "tile": "light",
+      "title": "MSc in Computer Engineering (Big Data & Distributed Infrastructure)",
+      "from": "2025",
+      "to": null,
+      "highlight": "Current GPA: 29.5 / 30",
+      "details": "Key coursework: Advanced Algorithm Design, Parallel Computing, Big Data, ML/DL, Distributed Systems, Graph DBs, Learning from Networks."
+    },
+    {
+      "org": "Ca' Foscari University of Venice",
+      "logo": "unive.png",
+      "tile": "red",
+      "title": "BSc in Computer Science",
+      "from": "2022",
+      "to": "2025",
+      "highlight": "Final grade: 110/110 with Honors",
+      "details": "Key coursework: Algorithms & Data Structures, Databases, Networks, Statistics."
+    },
+    {
+      "org": "Vrije Universiteit Brussel",
+      "logo": "vub.png",
+      "tile": "white",
+      "title": "Erasmus+ Exchange Program",
+      "from": "2024-09",
+      "to": "2025-02",
+      "highlight": null,
+      "details": "Key coursework: Scalable Data Management, Software Architectures."
+    }
+  ],
+  "experience": [
+    {
+      "org": "Wi-Care",
+      "logo": "wicare.png",
+      "tile": "white",
+      "title": "Co-Founder & Tech Lead",
+      "from": "2026",
+      "to": null,
+      "highlight": "Selected among the Top 10 business ideas in Start Cup Veneto 2026",
+      "details": "Currently engineering an IoT system that uses mmWave radar technology to non-invasively monitor elderly guests in retirement houses and automatically detect dangerous movement. Preparing for the National Innovation Award."
+    },
+    {
+      "org": "Omega Gruppo",
+      "logo": "omega.png",
+      "tile": "white",
+      "title": "Data Science Intern",
+      "from": "2024-06",
+      "to": "2024-09",
+      "highlight": null,
+      "details": "Designed optimized SQL queries (CTEs) to aggregate complex inventory and production data from relational databases. Built analytical dashboards to monitor material levels and corporate production efficiency KPIs. Implemented forecasting models using Scikit-Learn to predict future material demands based on historical trends."
+    },
+    {
+      "org": "Various Companies",
+      "logo": null,
+      "tile": "stone",
+      "title": "Customer Service & Operations",
+      "from": "2022",
+      "to": "2026",
+      "highlight": null,
+      "details": "Developed strong soft skills, focusing on teamwork, communication, and dealing directly with customers."
+    }
+  ],
+  "skills": [
+    {
+      "group": "Distributed & Big Data",
+      "items": [
+        "Apache Spark",
+        "Apache Kafka",
+        "Apache Airflow"
+      ],
+      "tile": "gold"
+    },
+    {
+      "group": "Programming & DBs",
+      "items": [
+        "Python",
+        "Scala",
+        "SQL",
+        "R",
+        "C++",
+        "Java",
+        "MongoDB"
+      ],
+      "tile": "silver"
+    },
+    {
+      "group": "DevOps & Infrastructure",
+      "items": [
+        "Docker",
+        "Kubernetes",
+        "Git"
+      ],
+      "tile": "bronze"
+    }
+  ],
+  "languages": [
+    {
+      "language": "Italian",
+      "level": "Native"
+    },
+    {
+      "language": "English",
+      "level": "C1"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Top 10 business ideas",
+      "event": "Start Cup Veneto 2026",
+      "about": "Start Cup Veneto is the business plan competition for innovative business ideas run by the universities of Padua, Verona and Iuav Venice; its winners go on to the Premio Nazionale per l'Innovazione.",
+      "details": "Wi-Care, where I am co-founder and tech lead, was selected among the Top 10 business ideas: an IoT system that uses mmWave radar technology to non-invasively monitor elderly guests in retirement houses and automatically detect dangerous movement. Wi-Care is now preparing for the National Innovation Award.",
+      "link": {
+        "url": "https://startcupveneto.it/informazioni/",
+        "label": "About Start Cup Veneto"
+      },
+      "repo": null,
+      "logo": "wicare.png"
+    },
+    {
+      "title": "Tech Innovation Prize",
+      "event": "TechWarriors Hackathon, Vicenza, 16–17 October 2026",
+      "about": "36 non-stop hours at La Centrale in Vicenza to design tools against gender-based violence, organised by Movimento Donne Impresa and the Digital Innovation Hub of Confartigianato Vicenza with Cre-Ta: 71 participants in 13 teams.",
+      "details": "With my team we built FRIENDlyZONE, a map of perceived safety in Vicenza: a score from 0 to 100 for each of the 13,728 pedestrian streets, from twelve factors in public data and from the users' positive and negative reports, that changes with the time of day and the user's profile, with alternative routes, an SOS button and location sharing. The jury rewarded its technological integrability, algorithmic complexity and community involvement.",
+      "link": {
+        "url": "https://www.confartigianatovicenza.it/digital-tech-warriors-vince-noage/",
+        "label": "Read the announcement"
+      },
+      "repo": "FriendZone",
+      "logo": null
+    }
+  ]
+}

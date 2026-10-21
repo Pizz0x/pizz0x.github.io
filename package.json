@@ -1,0 +1,20 @@
+{
+  "name": "pizz0x-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Filippo Pizzo's portfolio: public GitHub projects synced automatically, plus the curriculum, in English and Italian.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "fetch": "node scripts/fetch.mjs",
+    "translate": "node scripts/translate.mjs",
+    "build": "node scripts/build.mjs",
+    "all": "npm run fetch && npm run translate && npm run build",
+    "serve": "node scripts/serve.mjs",
+    "preview": "node scripts/preview.mjs"
+  },
+  "dependencies": {
+    "marked": "^14.1.4",
+    "node-html-parser": "^6.1.13"
+  }
+}

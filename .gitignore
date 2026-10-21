@@ -1,0 +1,9 @@
+# Claude Code: the design skills and settings stay on this computer, out of the public repository
+.claude/
+
+# build output and caches
+node_modules/
+dist/
+.data/
+.cache/
+.taste-skill/

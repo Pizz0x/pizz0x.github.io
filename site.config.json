@@ -1,0 +1,39 @@
+{
+  "site": {
+    "title": "Filippo Pizzo",
+    "url": "https://pizz0x.github.io",
+    "languages": ["en", "it"],
+    "defaultLanguage": "en"
+  },
+  "github": {
+    "user": "Pizz0x",
+    "includeForks": true,
+    "exclude": ["Portfolio", "pizz0x.github.io"]
+  },
+  "contact": {
+    "email": "filippopizzo03@gmail.com",
+    "github": "https://github.com/Pizz0x",
+    "linkedin": "https://www.linkedin.com/in/filippo-pizzo/",
+    "city": "Venice",
+    "timeZone": "Europe/Rome"
+  },
+  "disciplines": {
+    "data-engineering": { "color": "gold", "keywords": ["kafka", "spark", "airflow", "etl", "pipeline", "clickhouse", "data lake", "medallion", "postgres", "warehouse"] },
+    "distributed-systems": { "color": "bronze", "keywords": ["akka", "actor", "microservice", "distributed", "event sourcing", "parallel", "mpi", "openmp", "cuda"] },
+    "machine-learning": { "color": "silver", "keywords": ["xgboost", "catboost", "random forest", "neural network", "classifier", "predict", "scikit", "pytorch", "tensorflow", "model"] },
+    "graphs-and-models": { "color": "stone", "keywords": ["graph", "network analysis", "centrality", "game theory", "nash", "routing", "equilibri", "community detection"] }
+  },
+  "projects": {
+    "FriendZone": { "title": "FRIENDlyZONE", "discipline": "graphs-and-models", "award": "Tech Innovation Winner @ Tech Warriors Hackathon", "description": "Il backend calcola un punteggio di sicurezza percepita stimata (S, da 0 a 100) per ogni tratto della rete pedonale di Vicenza, poi per via e per quartiere: parte dalle fonti pubbliche e si aggiorna con le segnalazioni, positive e negative, lasciate dalle persone.", "tags": ["TechWarriors Vicenza 2026", "Hackathon", "OSM", "Leaflet", "GeoJSON", "kepler.gl"] },
+    "ISIS-SNA": { "title": "ISIS Network Analysis", "discipline": "graphs-and-models", "tags": ["Social Network Analysis", "Betweenness Centrality", "Community Detection", "Louvain", "NRC Emotion Lexicon", "Twitter"] },
+    "RetailDataPipeline": { "hide": true, "discipline": "data-engineering", "tags": ["Pandas", "SQLAlchemy", "PostgreSQL", "Apache Airflow"] },
+    "Retail-Data-Pipeline": { "discipline": "data-engineering", "pin": 1, "tags": ["Lambda Architecture", "Medallion Architecture", "Apache Kafka", "Apache Spark", "Apache Airflow", "MinIO", "ClickHouse", "Grafana"] },
+    "AI_Curriculum_Game": { "discipline": "graphs-and-models", "tags": ["Game Theory", "Bayesian game", "Nash Equilibria", "nashpy", "Backward induction"] },
+    "Child-Mind": { "title": "Child Mind", "discipline": "machine-learning", "tags": ["Predictive model", "Physical activity data", "Problematic internet and technology use"] },
+    "UFC-Predictor": { "discipline": "machine-learning", "tags": ["Web scraper", "Feature engineering", "XGBoost", "Random Forest", "Support Vector Machine", "Artificial Neural Network"] },
+    "WiFi-HAR": { "discipline": "machine-learning", "tags": ["Human Activity Recognition", "Person Identification", "Channel State Information", "STFT", "BiLSTM", "MixStyle", "Contrastive learning"] },
+    "query-engine": { "hide": true, "discipline": "distributed-systems", "tags": ["Scala", "Query parser", "Acyclicity", "Containment"] },
+    "next-surf": { "discipline": "graphs-and-models" },
+    "eBay-Auction-System": { "discipline": "distributed-systems", "tags": ["Microservice architecture", "Actor Model", "Akka", "Event-Sourcing", "Request-Response"] }
+  }
+}
