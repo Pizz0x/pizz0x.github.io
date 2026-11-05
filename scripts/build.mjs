@@ -245,7 +245,7 @@ function home(lang) {
   const rows = projects.map((p, i) => `${i === featured.length ? `<li class="ptable__group" data-reveal>${esc(t['home.more'])}</li>
       ` : ''}<li class="ptable__row" data-reveal style="--i:${Math.min(i, 8)}">
         <a href="${url(lang, `projects/${p.slug}/`)}">
-          <span class="ptable__title"><span class="swatch swatch--${discColor(p.discipline)}" aria-hidden="true"></span><span>${esc(p.title)}${p.parent ? `<span class="ptable__fork">${esc(fmt(t['home.forkOf'], { repo: p.parent.name }))}</span>` : ''}</span></span>
+          <span class="ptable__title"><span class="swatch swatch--${discColor(p.discipline)}" aria-hidden="true"></span><span>${esc(p.title)}${p.parent ? `<span class="ptable__fork">${esc(fmt(t['home.forkOf'], { repo: p.parent.name }))}</span>` : ''}${p.closed ? `<span class="ptable__fork">${esc(t['home.closed'])}</span>` : ''}</span></span>
           <span class="ptable__desc">${esc(P[p.slug].description)}</span>
           <span class="ptable__langs">${esc(p.languages.join(' · '))}</span>
           <span class="ptable__year tabular">${p.year}</span>
@@ -323,8 +323,8 @@ function project(lang, p, i) {
       <div class="phead__meta">
         ${p.award ? `<p class="phead__award">${esc(P.award)}</p>` : ''}
         ${p.parent ? `<p class="phead__fork">${fmt(esc(t['project.forkOf']), { repo: `<a href="${esc(p.parent.url)}" rel="noopener">${esc(p.parent.name)}</a>` })}</p>` : ''}
-        <p>${esc(fmt(t['project.updated'], { date: fmtDate(lang, p.pushedAt) }))}</p>
-        <a class="link" href="${esc(p.url)}" rel="noopener">${esc(t['project.github'])} ↗</a>
+        ${p.closed ? `<p class="phead__closed">${esc(t['project.closed'])}</p>` : `<p>${esc(fmt(t['project.updated'], { date: fmtDate(lang, p.pushedAt) }))}</p>
+        <a class="link" href="${esc(p.url)}" rel="noopener">${esc(t['project.github'])} ↗</a>`}
       </div>
     </div>
   </section>
@@ -345,14 +345,14 @@ function project(lang, p, i) {
     </div>
   </section>` : ''}
 
-  <section class="structure" aria-labelledby="structure-title">
+  ${p.tree ? `<section class="structure" aria-labelledby="structure-title">
     <div class="structure__head"><h2 id="structure-title" class="head">${esc(t['project.structure'])}</h2><p class="muted">${esc(t['project.structureNote'])}</p></div>
     ${treeSvg(p.tree, { href: blob, t })}
     ${treeList(p.tree, { href: blob, t })}
-  </section>
+  </section>` : ''}
 
   <section class="readme" aria-labelledby="readme-title">
-    <h2 id="readme-title" class="head">${esc(t['project.readme'])}</h2>
+    <h2 id="readme-title" class="head">${esc(p.closed ? t['project.caseStudy'] : t['project.readme'])}</h2>
     <div class="readme__grid">
       ${toc}
       <article class="prose${toc ? '' : ' prose--wide'}" lang="${lang}">${readme.trim() ? readme : `<p>${esc(t['project.noReadme'])}</p>`}</article>

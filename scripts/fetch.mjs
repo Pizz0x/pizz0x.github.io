@@ -9,7 +9,7 @@ import { dirname, join, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { githubSource, localSource } from './lib/sources.mjs';
 import {
-  chooseTitle, cleanTree, detectDiscipline, displayTree, languageUse, pickImages, pickPdfs, pickVideos,
+  chooseTitle, cleanTree, detectDiscipline, displayTree, humanize, languageUse, pickImages, pickPdfs, pickVideos,
   readReadme, relevance, renderReadme, shorten, slugify, treeStats,
 } from './lib/project.mjs';
 
@@ -139,9 +139,38 @@ async function project(repo) {
   return record;
 }
 
+// A closed-source project (`closed` in site.config.json): its repository is private, so nothing is read
+// from it. The page is the text written by hand in `closed.file`, and the facts are in the config.
+function closedProject(name, ov) {
+  const c = ov.closed;
+  const md = readFileSync(join(ROOT, c.file), 'utf8');
+  const parsed = readReadme(md);
+  const body = renderReadme(parsed.tokens, { dropIndexes: [], resolve: (href) => ({ href }) });
+  const languages = c.languages || [];
+  const now = new Date().toISOString();
+  const record = {
+    slug: ov.slug || slugify(ov.title || name), name, title: ov.title || parsed.h1 || humanize(name), description: ov.description || shorten(parsed.firstPara || ''),
+    lead: null, closed: true, url: null, homepage: c.homepage || '', fork: false, parent: null, branch: null, topics: [], stars: 0,
+    // still being worked on: the page is as recent as the last build
+    createdAt: now, pushedAt: now, medianCommitAt: now, year: c.year || new Date().getFullYear(),
+    languages, languageUse: [], discipline: detectDiscipline(ov, [], `${md} ${languages.join(' ')}`, config.disciplines),
+    award: ov.award || null, pin: ov.pin ?? null, tags: ov.tags || [],
+    readme: body.html, headings: body.headings,
+    stats: { files: 0, byExt: {} }, tree: null, pdfs: [], images: [], videos: [],
+  };
+  // the page written by hand in another language too: translate.mjs uses it instead of a machine translation
+  record.translations = Object.fromEntries(Object.entries(c.translations || {}).map(([lang, tr]) => {
+    const page = renderReadme(readReadme(readFileSync(join(ROOT, tr.file), 'utf8')).tokens, { dropIndexes: [], resolve: (href) => ({ href }) });
+    return [lang, { description: tr.description || null, readme: page.html, headings: page.headings }];
+  }));
+  record.relevance = relevance(record, { readme: md, disciplines: config.disciplines, ranking, inCurriculum: inCurriculum.has(name), boost: ov.boost || 0 });
+  return record;
+}
+const closed = Object.entries(overrides).filter(([, ov]) => ov.closed && !ov.hide);
+
 const repos = (await source.listRepos()).filter((r) =>
   !r.private && !r.archived && (config.github.includeForks || !r.fork) && !exclude.has(r.name.toLowerCase())
-  && !r.topics.includes('portfolio-hide') && !(overrides[r.name] || {}).hide);
+  && !r.topics.includes('portfolio-hide') && !(overrides[r.name] || {}).hide && !(overrides[r.name] || {}).closed);
 
 rmSync(FILES, { recursive: true, force: true });
 mkdirSync(FILES, { recursive: true });
@@ -149,6 +178,10 @@ const projects = [];
 for (const repo of repos) {
   console.log(`- ${repo.name}`);
   projects.push(await project(repo));
+}
+for (const [name, ov] of closed) {
+  console.log(`- ${name} (closed source, ${ov.closed.file})`);
+  projects.push(closedProject(name, ov));
 }
 // pinned repositories first, in their order; then by relevance; ties go to the most recent push
 projects.sort((a, b) => (a.pin ?? 99) - (b.pin ?? 99) || b.relevance.score - a.relevance.score || new Date(b.pushedAt) - new Date(a.pushedAt));

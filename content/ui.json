@@ -1,5 +1,5 @@
 {
-  "meta.description": "Filippo Pizzo, MSc Computer Engineering student specializing in Distributed Systems, High Performance Computing and Big Data Architectures: curriculum and public GitHub projects.",
+  "meta.description": "Filippo Pizzo, MSc Computer Engineering student specializing in Distributed Systems, High Performance Computing and Big Data Architectures: curriculum and projects.",
   "nav.projects": "Projects",
   "nav.cv": "Curriculum",
   "nav.skip": "Skip to content",
@@ -7,7 +7,7 @@
   "home.cta": "See the curriculum",
   "home.ringHint": "My projects. Each one opens its page.",
   "home.repos": "Projects",
-  "home.reposNote": "From my GitHub repositories, synced every night, the most relevant first.",
+  "home.reposNote": "The most relevant first. Wi-Care is the start-up I co-founded; the other projects come from my GitHub repositories and are updated every night.",
   "home.more": "Other projects",
   "home.orgs": "Where I studied and worked",
   "home.kind.education": "Education",
@@ -63,5 +63,8 @@
   "home.forkOf": "Fork of {repo}",
   "project.tags": "Topics",
   "project.languagesNote": "Where the files of each language are in the repository.",
-  "project.languageMore": "and {n} more"
+  "project.languageMore": "and {n} more",
+  "project.closed": "Closed source: the code belongs to the start-up. This page tells what I built and how.",
+  "project.caseStudy": "The project",
+  "home.closed": "Start-up, closed source"
 }

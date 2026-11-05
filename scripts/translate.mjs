@@ -75,6 +75,9 @@ for (const p of data.projects) {
       readme: fillHtml(seg.template, t.slice(n)),
       translated: lang !== readmeLang, sourceLang: readmeLang,
     };
+    // a closed-source project's page written by hand in this language wins over the machine translation
+    const own = p.translations?.[lang];
+    if (own) Object.assign(projT[lang][p.slug], { readme: own.readme, headings: own.headings, translated: false, sourceLang: lang }, own.description ? { description: own.description } : {});
   }
   console.log(`- ${p.slug} (${readmeLang}, ${all.length} segments)`);
 }
