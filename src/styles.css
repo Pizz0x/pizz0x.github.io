@@ -253,6 +253,7 @@ main [id] { scroll-margin-top: 90px; } /* room for the sticky bar when a link ju
 .ptable__cols { margin: 0; padding-bottom: 12px; color: var(--muted); font-size: var(--step-small); border-bottom: 1px solid var(--line); }
 .ptable__rows { list-style: none; margin: 0; padding: 0; }
 .ptable__row { border-bottom: 1px solid var(--line); }
+.ptable__group { padding: 56px 8px 12px; color: var(--muted); font-size: var(--step-small); border-bottom: 1px solid var(--line); }
 .ptable__row a { padding-block: 26px; align-items: baseline; text-decoration: none; transition: background-color var(--t-hover) ease; }
 .ptable__title { display: flex; align-items: baseline; gap: 12px; font-size: var(--step-lead); font-weight: 500; line-height: 1.15; transition: translate var(--t-ui) var(--ease-out); }
 .ptable__title .swatch { width: 10px; height: 10px; translate: 0 -0.1em; transition: scale var(--t-ui) var(--ease-out); }

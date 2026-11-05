@@ -52,7 +52,9 @@ export function readReadme(md, ctx) {
     if (!h1 && t.type === 'heading' && t.depth === 1) h1 = plain(t.text);
     if (firstParaIndex < 0 && t.type === 'paragraph') {
       // prose only: drop "(see `path`)" asides and any sentence that is really a command or a path
-      const prose = t.text.replace(/\([^)]*`[^)]*\)/g, '').split(/(?<=[.!?])\s+/).filter((s) => !s.includes('`')).join(' ');
+      // and the sentence that only announces a list ("It compares three ways…:")
+      const sentences = t.text.replace(/\([^)]*`[^)]*\)/g, '').split(/(?<=[.!?:])\s+/).filter((s) => !s.includes('`'));
+      const prose = (sentences.length > 1 && /:\s*$/.test(sentences[sentences.length - 1]) ? sentences.slice(0, -1) : sentences).join(' ');
       const txt = plain(prose).replace(/\s+([.,;:])/g, '$1');
       if (txt.length > 40 && !/:$/.test(txt) && !/localhost|127\.0\.0\.1/.test(t.text)) { firstPara = txt; firstParaIndex = i; firstParaWhole = prose.replace(/\s+/g, " ").trim() === t.text.replace(/\s+/g, " ").trim(); }
     }
@@ -250,6 +252,32 @@ export function detectDiscipline(override, topics, text, disciplines) {
     if (s > bestScore) { best = id; bestScore = s; }
   }
   return best || Object.keys(disciplines)[0];
+}
+
+// How much a repository says about the work this portfolio is for. Every part is a plain number kept
+// in projects.json, so the order can be read back and tuned in site.config.json ("ranking", each
+// discipline's "weight", a project's "boost"); "pin" still wins over the score.
+export function relevance(p, { readme, disciplines, ranking, inCurriculum, boost = 0, now = Date.now() }) {
+  const months = Math.max(0, (now - new Date(p.medianCommitAt || p.pushedAt)) / 2.63e9);
+  // the portfolio's own subject: how many of its discipline's keywords the README uses, whatever the project's discipline
+  const hay = (readme || '').toLowerCase();
+  const focusHits = (disciplines[ranking.focus]?.keywords || []).filter((k) => hay.includes(k)).length;
+  const parts = {
+    discipline: disciplines[p.discipline]?.weight ?? 10,
+    focus: Math.min(ranking.focusMax, focusHits * ranking.focusEach),
+    award: p.award ? ranking.award : 0,
+    curriculum: inCurriculum ? ranking.curriculum : 0,
+    documentation: Math.min(8, p.headings.length * 1.5) + Math.min(6, (readme || '').length / 1500),
+    documents: p.pdfs.length ? ranking.documents : 0,
+    media: p.images.length || p.videos.length ? ranking.media : 0,
+    size: Math.min(7, Math.log2(p.stats.files + 1)),
+    recency: 10 * Math.exp(-months / 18),
+    stars: Math.min(10, (p.stars || 0) * 2),
+    fork: p.fork ? -ranking.fork : 0,
+    boost,
+  };
+  for (const k of Object.keys(parts)) parts[k] = Math.round(parts[k] * 10) / 10;
+  return { score: Math.round(Object.values(parts).reduce((a, b) => a + b, 0) * 10) / 10, parts };
 }
 
 export { chooseTitle, plain, shorten };

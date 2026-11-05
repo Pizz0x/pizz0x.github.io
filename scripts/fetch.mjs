@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { githubSource, localSource } from './lib/sources.mjs';
 import {
   chooseTitle, cleanTree, detectDiscipline, displayTree, languageUse, pickImages, pickPdfs, pickVideos,
-  readReadme, renderReadme, shorten, slugify, treeStats,
+  readReadme, relevance, renderReadme, shorten, slugify, treeStats,
 } from './lib/project.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -25,6 +25,10 @@ const source = process.env.LOCAL_REPOS
 
 const exclude = new Set((config.github.exclude || []).map((s) => s.toLowerCase()));
 const overrides = config.projects || {};
+const ranking = { focus: 'data-engineering', focusEach: 2, focusMax: 10, award: 12, curriculum: 10, documents: 6, media: 4, fork: 8, ...config.ranking };
+// repositories the curriculum names count as more relevant: they are the ones chosen for it
+const cv = JSON.parse(readFileSync(join(ROOT, 'content/cv.json'), 'utf8'));
+const inCurriculum = new Set([...(cv.projects || []), ...(cv.awards || [])].map((x) => x.repo).filter(Boolean));
 
 function save(rel, buf) {
   const p = join(FILES, rel);
@@ -117,7 +121,7 @@ async function project(repo) {
   const langs = Object.entries(languages).sort((a, b) => Number(MARKUP.has(a[0])) - Number(MARKUP.has(b[0])) || b[1] - a[1]).map(([k]) => k);
   const discipline = detectDiscipline(ov, repo.topics, `${readme?.text || ''} ${langs.join(' ')}`, config.disciplines);
 
-  return {
+  const record = {
     slug, name: repo.name, title: chooseTitle(repo, parsed.h1, ov), description,
     lead: leadFromReadme && parsed.firstParaWhole ? parsed.firstPara : null,
     url: repo.url, homepage: repo.homepage, fork: repo.fork, parent, branch: repo.branch, topics: repo.topics, stars: repo.stars,
@@ -131,6 +135,8 @@ async function project(repo) {
     stats: treeStats(files), tree: displayTree(nodes, repo.name),
     pdfs, images, videos,
   };
+  record.relevance = relevance(record, { readme: readme?.text, disciplines: config.disciplines, ranking, inCurriculum: inCurriculum.has(repo.name), boost: ov.boost || 0 });
+  return record;
 }
 
 const repos = (await source.listRepos()).filter((r) =>
@@ -144,9 +150,16 @@ for (const repo of repos) {
   console.log(`- ${repo.name}`);
   projects.push(await project(repo));
 }
-projects.sort((a, b) => (a.pin ?? 99) - (b.pin ?? 99) || new Date(b.pushedAt) - new Date(a.pushedAt));
+// pinned repositories first, in their order; then by relevance; ties go to the most recent push
+projects.sort((a, b) => (a.pin ?? 99) - (b.pin ?? 99) || b.relevance.score - a.relevance.score || new Date(b.pushedAt) - new Date(a.pushedAt));
+// the projects around the name: the first `home.featured` that are not marked "feature": false in
+// site.config.json; they lead the table too, the others follow under "Other projects"
+const featured = projects.filter((p) => (overrides[p.name] || {}).feature !== false).slice(0, Math.max(2, config.home?.featured ?? 6));
+for (const p of projects) p.featured = featured.includes(p);
+projects.sort((a, b) => Number(b.featured) - Number(a.featured));
 const seen = new Map();
 for (const p of projects) { const k = p.title.toLowerCase(); if (seen.has(k)) p.title = `${p.title} (${p.year})`; seen.set(k, p); }
 
 writeFileSync(join(OUT, 'projects.json'), JSON.stringify({ generatedAt: new Date().toISOString(), source: source.kind, user, projects }, null, 2));
 console.log(`${projects.length} projects → .data/projects.json`);
+projects.forEach((p, i) => console.log(`  ${String(i + 1).padStart(2)}. ${p.title.padEnd(32)} ${p.pin ? 'pinned' : String(p.relevance.score).padStart(6)}${p.featured ? '  featured' : ''}`));

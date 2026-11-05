@@ -234,13 +234,16 @@ function home(lang) {
   const { ui: t, cv } = i18n[lang];
   const P = i18n[lang].projects;
   const [first, ...rest] = cv.name.split(' ');
-  const half = Math.ceil(projects.length / 2);
+  // around the name only the featured few (chosen in fetch.mjs, first in the list); the table has them all
+  const featured = projects.filter((p) => p.featured);
+  const half = Math.ceil(featured.length / 2);
   const orgs = [...cv.education.map((o) => ({ ...o, kind: 'education' })), ...cv.experience.map((o) => ({ ...o, kind: 'work' }))].filter((o) => o.logo);
   const orgTiles = orgs.map((o, i) => `<li class="orgs__item orgs__item--${o.kind}" data-reveal style="--i:${i}">
         <div class="tile logo-tile logo-tile--${o.tile}"><img src="${asset(`logos/${o.logo}`)}" alt="${esc(o.org)}" loading="lazy"><span class="orgs__kind">${esc(t[`home.kind.${o.kind}`])}</span></div>
         <p class="orgs__name">${esc(o.org)}</p><p class="orgs__role">${esc(o.title)}, ${esc(period(lang, o.from, o.to, t))}</p>
       </li>`).join('\n      ');
-  const rows = projects.map((p, i) => `<li class="ptable__row" data-reveal style="--i:${Math.min(i, 8)}">
+  const rows = projects.map((p, i) => `${i === featured.length ? `<li class="ptable__group" data-reveal>${esc(t['home.more'])}</li>
+      ` : ''}<li class="ptable__row" data-reveal style="--i:${Math.min(i, 8)}">
         <a href="${url(lang, `projects/${p.slug}/`)}">
           <span class="ptable__title"><span class="swatch swatch--${discColor(p.discipline)}" aria-hidden="true"></span><span>${esc(p.title)}${p.parent ? `<span class="ptable__fork">${esc(fmt(t['home.forkOf'], { repo: p.parent.name }))}</span>` : ''}</span></span>
           <span class="ptable__desc">${esc(P[p.slug].description)}</span>
@@ -253,7 +256,7 @@ function home(lang) {
   const main = `
   <section class="hero" aria-labelledby="hero-title">
     <ul class="ring ring--left" aria-label="${esc(t['home.ringHint'])}">
-      ${ring(lang, 'left', projects.slice(0, half), 0)}
+      ${ring(lang, 'left', featured.slice(0, half), 0)}
     </ul>
     <div class="hero__core">
       <h1 id="hero-title" class="hero__title lines" style="--fit:${Math.max(first.length, rest.join(' ').length)}">${lines(first, rest.join(' '))}</h1>
@@ -262,7 +265,7 @@ function home(lang) {
       <p class="hero__contacts" data-load style="--d:620ms"><a href="mailto:${esc(contact.email)}">${esc(contact.email)}</a>${contact.linkedin ? `<a href="${esc(contact.linkedin)}" rel="noopener">LinkedIn</a>` : ''}<a href="${esc(contact.github)}" rel="noopener">GitHub</a></p>
     </div>
     <ul class="ring ring--right" aria-label="${esc(t['home.ringHint'])}">
-      ${ring(lang, 'right', projects.slice(half), half)}
+      ${ring(lang, 'right', featured.slice(half), half)}
     </ul>
   </section>
 

@@ -17,14 +17,16 @@
     "city": "Venice",
     "timeZone": "Europe/Rome"
   },
+  "home": { "featured": 6 },
   "disciplines": {
-    "data-engineering": { "color": "gold", "keywords": ["kafka", "spark", "airflow", "etl", "pipeline", "clickhouse", "data lake", "medallion", "postgres", "warehouse"] },
-    "distributed-systems": { "color": "bronze", "keywords": ["akka", "actor", "microservice", "distributed", "event sourcing", "parallel", "mpi", "openmp", "cuda"] },
-    "machine-learning": { "color": "silver", "keywords": ["xgboost", "catboost", "random forest", "neural network", "classifier", "predict", "scikit", "pytorch", "tensorflow", "model"] },
-    "graphs-and-models": { "color": "stone", "keywords": ["graph", "network analysis", "centrality", "game theory", "nash", "routing", "equilibri", "community detection"] }
+    "data-engineering": { "color": "gold", "keywords": ["kafka", "spark", "airflow", "etl", "pipeline", "clickhouse", "data lake", "medallion", "postgres", "warehouse", "snakemake", "workflow", "dag", "orchestration", "scraper", "ingestion", "data cleaning", "batch", "streaming"], "weight": 30 },
+    "distributed-systems": { "color": "bronze", "keywords": ["akka", "actor", "microservice", "distributed", "event sourcing", "parallel", "mpi", "openmp", "cuda"], "weight": 22 },
+    "machine-learning": { "color": "silver", "keywords": ["xgboost", "catboost", "random forest", "neural network", "classifier", "predict", "scikit", "pytorch", "tensorflow", "model"], "weight": 16 },
+    "graphs-and-models": { "color": "stone", "keywords": ["graph", "network analysis", "centrality", "game theory", "nash", "routing", "equilibri", "community detection"], "weight": 10 }
   },
+  "ranking": { "focus": "data-engineering", "focusEach": 2, "focusMax": 10, "award": 12, "curriculum": 10, "documents": 6, "media": 4, "fork": 8 },
   "projects": {
-    "FriendZone": { "title": "FRIENDlyZONE", "discipline": "graphs-and-models", "award": "Tech Innovation Winner @ Tech Warriors Hackathon", "description": "Il backend calcola un punteggio di sicurezza percepita stimata (S, da 0 a 100) per ogni tratto della rete pedonale di Vicenza, poi per via e per quartiere: parte dalle fonti pubbliche e si aggiorna con le segnalazioni, positive e negative, lasciate dalle persone.", "tags": ["TechWarriors Vicenza 2026", "Hackathon", "OSM", "Leaflet", "GeoJSON", "kepler.gl"] },
+    "FriendZone": { "feature": false, "title": "FRIENDlyZONE", "discipline": "graphs-and-models", "award": "Tech Innovation Winner @ Tech Warriors Hackathon", "description": "Il backend calcola un punteggio di sicurezza percepita stimata (S, da 0 a 100) per ogni tratto della rete pedonale di Vicenza, poi per via e per quartiere: parte dalle fonti pubbliche e si aggiorna con le segnalazioni, positive e negative, lasciate dalle persone.", "tags": ["TechWarriors Vicenza 2026", "Hackathon", "OSM", "Leaflet", "GeoJSON", "kepler.gl"] },
     "ISIS-SNA": { "title": "ISIS Network Analysis", "discipline": "graphs-and-models", "tags": ["Social Network Analysis", "Betweenness Centrality", "Community Detection", "Louvain", "NRC Emotion Lexicon", "Twitter"] },
     "RetailDataPipeline": { "hide": true, "discipline": "data-engineering", "tags": ["Pandas", "SQLAlchemy", "PostgreSQL", "Apache Airflow"] },
     "Retail-Data-Pipeline": { "discipline": "data-engineering", "pin": 1, "tags": ["Lambda Architecture", "Medallion Architecture", "Apache Kafka", "Apache Spark", "Apache Airflow", "MinIO", "ClickHouse", "Grafana"] },
@@ -34,6 +36,7 @@
     "WiFi-HAR": { "discipline": "machine-learning", "tags": ["Human Activity Recognition", "Person Identification", "Channel State Information", "STFT", "BiLSTM", "MixStyle", "Contrastive learning"] },
     "query-engine": { "hide": true, "discipline": "distributed-systems", "tags": ["Scala", "Query parser", "Acyclicity", "Containment"] },
     "next-surf": { "discipline": "graphs-and-models" },
+    "TaxonomicClassification": { "title": "Taxonomic Classification", "discipline": "data-engineering", "tags": ["Snakemake", "Workflow DAG", "Conda environments", "Kraken2", "GraphBin2", "MEGAHIT", "MetaSPAdes", "AMBER"] },
     "eBay-Auction-System": { "discipline": "distributed-systems", "tags": ["Microservice architecture", "Actor Model", "Akka", "Event-Sourcing", "Request-Response"] }
   }
 }
